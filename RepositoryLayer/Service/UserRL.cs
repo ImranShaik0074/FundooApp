@@ -26,13 +26,13 @@ namespace RepositoryLayer.Service
                 userEntity.FirstName = userRegistrationModel.FirstName;
                 userEntity.LastName = userRegistrationModel.LastName;
                 userEntity.Email = userRegistrationModel.Email;
-                userEntity.Password = userRegistrationModel.Password;
+                userEntity.Password= userRegistrationModel.Password;
 
                 fundooContext.Usertable.Add(userEntity);
 
                 int result = fundooContext.SaveChanges();
-
-                if (result != 0)
+                
+                if(result !=0)
                 {
                     return userEntity;
                 }
@@ -41,7 +41,30 @@ namespace RepositoryLayer.Service
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
+            {
+                throw;
+            }
+        }
+        public UserLoginModel Login(UserLoginModel userLoginModel)
+        {
+            try
+            {
+                var resultLog = fundooContext.Usertable.Where(x => x.Email == userLoginModel.Email && x.Password == userLoginModel.Password).FirstOrDefault();
+                
+                if(resultLog != null)
+                {
+                    userLoginModel.Email = resultLog.Email;
+                    userLoginModel.Password = resultLog.Password;
+                    
+                    return userLoginModel;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception ex)
             {
                 throw;
             }
